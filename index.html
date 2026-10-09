@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Вайбкодинг - Айнұр Хаметқызы</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        playfair: ['"Playfair Display"', 'serif'],
+                        caveat: ['Caveat', 'cursive'],
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    colors: {
+                        science: {
+                            blue: '#0a1128',
+                            lightBlue: '#162b4d', 
+                            gold: '#d4af37',
+                            sepia: '#f4ebd8',
+                            red: '#8b0000',
+                            laser: '#00c3ff'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #2c0412; /* Бордовый (қою шарап түстес) негізгі түс */
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(139, 0, 40, 0.7), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(80, 0, 20, 0.6), transparent 40%),
+                linear-gradient(rgba(244, 235, 216, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(244, 235, 216, 0.04) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+            color: #f4ebd8;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Артқы фонда қалқып жүретін сөздер анимациясы */
+        .floating-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .float-word {
+            position: absolute;
+            font-family: 'Caveat', cursive;
+            color: rgba(212, 175, 55, 0.12); /* Мөлдір алтын түс */
+            font-weight: 700;
+            white-space: nowrap;
+            animation: floatUpward linear infinite;
+        }
+        @keyframes floatUpward {
+            0% { transform: translateY(110vh) rotate(-15deg) scale(0.8); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(15deg) scale(1.2); opacity: 0; }
+        }
+        .fw-1 { left: 5%; font-size: 3rem; animation-duration: 20s; animation-delay: 0s; }
+        .fw-2 { left: 25%; font-size: 5rem; animation-duration: 28s; animation-delay: -5s; color: rgba(0, 195, 255, 0.08); /* Мөлдір көк */ }
+        .fw-3 { left: 55%; font-size: 7rem; animation-duration: 35s; animation-delay: -15s; }
+        .fw-4 { left: 75%; font-size: 4rem; animation-duration: 24s; animation-delay: -8s; }
+        .fw-5 { left: 85%; font-size: 6rem; animation-duration: 30s; animation-delay: -2s; color: rgba(0, 195, 255, 0.08); }
+        .fw-6 { left: 40%; font-size: 3.5rem; animation-duration: 22s; animation-delay: -12s; }
+
+        .swiper {
+            width: 100%;
+            height: 100vh;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        /* Лазерлік анимациясы бар рамка стилі */
+        .swiper-slide {
+            background: transparent;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(0, 195, 255, 0.1);
+            width: 95%; /* Телефон үшін көбірек орын */
+            max-width: 950px;
+            height: 82vh;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        @media (min-width: 768px) {
+            .swiper-slide {
+                width: 85%; /* Компьютер/Проектор үшін оңтайлы */
+                height: 75vh;
+            }
+            .swiper {
+                padding-top: 3rem;
+                padding-bottom: 4rem;
+            }
+        }
+
+        .swiper-slide::before,
+        .swiper-slide::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            z-index: 0;
+        }
+        
+        .swiper-slide::before {
+            background: conic-gradient(from 0deg, transparent 70%, rgba(212, 175, 55, 0.1) 80%, #d4af37 100%);
+            animation: rotate-laser 4s linear infinite;
+        }
+        
+        .swiper-slide::after {
+            background: conic-gradient(from 180deg, transparent 70%, rgba(0, 195, 255, 0.1) 80%, #00c3ff 100%);
+            animation: rotate-laser-reverse 4s linear infinite;
+        }
+
+        .slide-inner-bg {
+            position: absolute;
+            inset: 2px; /* Рамканың қалыңдығы */
+            background: #0a1128;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(22, 43, 77, 0.9), transparent 60%),
+                radial-gradient(circle at 50% 100%, rgba(22, 43, 77, 0.9), transparent 60%);
+            border-radius: 14px;
+            z-index: 1;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        @keyframes rotate-laser {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes rotate-laser-reverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* 1-бет: Алтын мен көкке құбылатын анимация */
+        .text-glow-magic {
+            display: inline-block;
+            animation: pulse-glow-magic 5s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulse-glow-magic {
+            0% { 
+                color: #FFD700;
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.6); 
+                transform: scale(1); 
+            }
+            50% {
+                color: #00c3ff;
+                text-shadow: 0 0 15px rgba(0, 195, 255, 0.9), 0 0 25px rgba(0, 195, 255, 0.7); 
+                transform: scale(1.03);
+            }
+            100% { 
+                color: #FFD700;
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.6); 
+                transform: scale(1); 
+            }
+        }
+
+        /* 2-бет: Киберпанк статикалық стилі */
+        .cyberpunk-static {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            color: #fced0a; /* Киберпанк сары түсі */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 0px 0px rgba(0, 195, 255, 0.9), -2px 0px 0px rgba(255, 0, 60, 0.9);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 10px;
+            border-left: 3px solid #00c3ff;
+            border-right: 3px solid #ff003c;
+            display: inline-block;
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(45deg, #d4af37, #f3e5ab);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 8px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.4); border-radius: 8px; }
+
+        @media (min-width: 768px) {
+            .custom-scroll::-webkit-scrollbar { width: 6px; }
+        }
+
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 17, 40, 0.85);
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            transform: scale(0.95) translateY(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #162b4d;
+            border: 1px solid #d4af37;
+            width: 95%; /* Мобильді үшін */
+        }
+        @media (min-width: 768px) {
+            .modal-content { width: 100%; }
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        /* ҮЛКЕЙТУ (ZOOM) ЭФФЕКТІСІ - Адаптивті */
+        .zoomable-text {
+            cursor: zoom-in;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .zoomable-text:hover {
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+        .zoomable-text:hover::after {
+            content: '\f0b2'; /* arrows-alt */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 10px; right: 10px;
+            color: #d4af37;
+            font-size: 1.2rem;
+            opacity: 0.6;
+        }
+        
+        .zoomed-in {
+            position: fixed !important;
+            top: 2% !important; left: 2% !important;
+            width: 96% !important; height: 96% !important;
+            z-index: 9999 !important;
+            background: #0a1128 !important;
+            background-image: radial-gradient(circle at center, #162b4d, #0a1128) !important;
+            border: 2px solid #d4af37 !important;
+            border-radius: 12px !important;
+            padding: 1.5rem !important; /* Телефон үшін аз padding */
+            overflow-y: auto !important;
+            box-shadow: 0 0 80px rgba(0, 195, 255, 0.3), inset 0 0 30px rgba(212, 175, 55, 0.2) !important;
+            cursor: zoom-out !important;
+            display: block !important;
+        }
+        
+        /* Мобильді телефондағы Zoom шрифттері */
+        .zoomed-in * { font-size: 1.1rem !important; line-height: 1.6 !important; white-space: normal !important; }
+        .zoomed-in h3 { font-size: 1.5rem !important; margin-bottom: 1rem !important; border-bottom: 2px solid rgba(212,175,55,0.4) !important; padding-bottom: 0.5rem !important; }
+        .zoomed-in p, .zoomed-in li { font-size: 1.05rem !important; margin-bottom: 1rem !important; }
+        .zoomed-in pre { font-size: 0.9rem !important; white-space: pre-wrap !important; line-height: 1.5 !important; }
+
+        /* Компьютердегі Zoom шрифттері */
+        @media (min-width: 768px) {
+            .zoomed-in {
+                top: 3% !important; left: 3% !important;
+                width: 94% !important; height: 94% !important;
+                border-radius: 16px !important;
+                padding: 3rem !important;
+            }
+            .zoomed-in * { font-size: 1.35rem !important; line-height: 1.8 !important; }
+            .zoomed-in h3 { font-size: 2rem !important; margin-bottom: 1.5rem !important; }
+            .zoomed-in p, .zoomed-in li { font-size: 1.25rem !important; margin-bottom: 1.2rem !important; }
+            .zoomed-in pre { font-size: 1.15rem !important; line-height: 1.6 !important; }
+        }
+
+        .zoomed-in::after { content: '\f066' !important; } /* compress icon */
+
+    </style>
+</head>
+<body>
+
+    <!-- Артқы фонда қалқып жүретін сөздер -->
+    <div class="floating-bg">
+        <div class="float-word fw-1">Вайбкодинг</div>
+        <div class="float-word fw-2">Вайбкодинг</div>
+        <div class="float-word fw-3">Вайбкодинг</div>
+        <div class="float-word fw-4">Вайбкодинг</div>
+        <div class="float-word fw-5">Вайбкодинг</div>
+        <div class="float-word fw-6">Вайбкодинг</div>
+    </div>
+
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+
+            <!-- 1-слайд: Титул -->
+            <div class="swiper-slide">
+                <div class="slide-inner-bg"></div>
+                <div class="slide-content p-5 md:p-10 flex flex-col justify-center items-center text-center">
+                    <h1 class="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight text-science-sepia px-2">
+                        <span class="font-caveat text-4xl sm:text-5xl md:text-6xl text-glow-magic px-2 block mb-2">Вайбкодинг</span>
+                        <span class="text-gradient-gold text-lg sm:text-xl md:text-2xl lg:text-3xl block">(Vibecoding) тәсілі арқылы</span>
+                        <span class="text-base sm:text-lg md:text-xl lg:text-2xl block mt-2">қазақ тілі мен әдебиеті сабақтарына<br>интерактивті тапсырмалар жасау</span>
+                    </h1>
+                    
+                    <div class="zoomable-text bg-black/30 border border-science-gold/20 p-4 md:p-6 rounded-lg max-w-2xl text-left w-full mx-auto mt-4" onclick="toggleZoom(this, event)">
+                        <h3 class="font-playfair text-base md:text-lg lg:text-xl font-bold text-science-gold mb-2 border-b border-science-gold/20 pb-1">Мақсаты:</h3>
+                        <p class="text-science-sepia text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed font-inter">
+                            Бірде-бір жол код жазбай, жасанды интеллектпен (DeepSeek, ChatGPT, Claude) «сөйлесу» арқылы сабаққа қажетті цифрлық дидактикалық материалдар (түрлі форматтағы тесттер, зияткерлік ойындар) әзірлеуді үйрену. HTML файл жасау құпияларымен бөлісу.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2-слайд: Промпт құрылымы және Жұмыс парағы -->
+            <div class="swiper-slide">
+                <div class="slide-inner-bg"></div>
+                <div class="slide-content p-4 md:p-8 flex flex-col md:flex-row gap-4 md:gap-8 h-full items-center">
+                    
+                    <!-- Промпт құрылымы (Сол жақ) -->
+                    <div class="w-full md:w-1/2 flex flex-col justify-center text-left h-full">
+                        <h2 class="font-playfair text-xl sm:text-2xl md:text-3xl font-bold text-gradient-gold mb-3 md:mb-5 border-b border-science-gold/20 pb-2 w-full">
+                            Нәтижелі промпт құрылымы
+                        </h2>
+                        <div class="space-y-3 md:space-y-5 font-inter text-sm sm:text-base md:text-lg text-science-sepia overflow-y-auto custom-scroll pr-2 max-h-[35vh] md:max-h-none">
+                            <p><strong class="text-science-laser font-bold block mb-1">1. Рөл беру:</strong> «Сен тәжірибелі мұғалімсің және жоғары деңгейлі веб-әзірлеушісің...»</p>
+                            <p><strong class="text-science-laser font-bold block mb-1">2. Мазмұны (Контент):</strong> «Маған нақты [Пән/Тақырып] бойынша мынадай интерактивті тапсырма жасап бер...» <br><span class="text-science-gold/90 text-xs md:text-sm italic mt-1.5 block">* Ескерту: ЖИ галлюцинациясын (мәтіннен ауытқуын) болдырмау үшін нақты мәтінді міндетті түрде өзіңіз ұсынуыңыз қажет!</span></p>
+                            <p><strong class="text-science-laser font-bold block mb-1">3. Дизайн мен интерфейс:</strong> «Заманауи киберпанк/премиум стильде, дұрыс жауап жасыл, қате жауап қызыл түспен жансын. Анимация мен дыбыстар болсын...»</p>
+                            <p><strong class="text-science-laser font-bold block mb-1">4. Техникалық талап:</strong> «Барлық кодты (HTML, CSS, JS) сыртқы кітапханаларсыз бір ғана файлға біріктіріп жаз...»</p>
+                        </div>
+                    </div>
+
+                    <!-- Оқу мақсаттары мен тапсырмалар (Оң жақ) -->
+                    <div class="w-full md:w-1/2 h-[40vh] md:h-full flex flex-col justify-center">
+                        <div class="zoomable-text bg-black/40 border border-science-gold/30 rounded-xl p-4 md:p-6 shadow-[0_0_20px_rgba(212,175,55,0.15)] relative z-10 w-full overflow-y-auto custom-scroll max-h-full" onclick="toggleZoom(this, event)">
+                            
+                            <div class="flex justify-end w-full mb-3 pr-8">
+                                <button onclick="copyText('cases-text-content')" class="bg-science-gold text-science-blue px-3 py-1.5 md:px-4 md:py-2 text-[10px] md:text-xs rounded font-bold hover:bg-yellow-400 transition shadow-[0_0_10px_rgba(212,175,55,0.3)] shrink-0 relative z-20">
+                                    <i class="fa-regular fa-copy"></i> Көшіру
+                                </button>
+                            </div>
+
+                            <div id="cases-text-content">
+                                <h3 class="font-playfair text-lg sm:text-xl md:text-2xl font-bold text-science-laser mb-4 border-b border-science-laser/30 pb-2">
+                                    6-сынып. Қазақ әдебиеті пәні.<br>Абай Құнанбаев. Жетінші қарасөз.
+                                </h3>
+                                <div class="space-y-3 md:space-y-4 font-inter text-xs sm:text-sm md:text-base text-science-sepia text-left">
+                                    <div class="p-3 bg-science-blue/50 rounded-lg border border-science-gold/20 transition-all hover:border-science-laser/50">
+                                        <strong class="text-science-gold block mb-1">1) Интерактивті тест.</strong>
+                                        <span>6.2.2.1. әдеби шығармада көтерілген әлеуметтік-қоғамдық мәселені идеясы арқылы түсіндіру.</span>
+                                    </div>
+                                    <div class="p-3 bg-science-blue/50 rounded-lg border border-science-gold/20 transition-all hover:border-science-laser/50">
+                                        <strong class="text-science-gold block mb-1">2) "Хронологиялық тізбек" ойыны.</strong>
+                                        <span>6.1.4.1 көркем шығармалардан орта көлемді үзінділерді мәнерлеп оқу, жатқа айту.</span>
+                                    </div>
+                                    <div class="p-3 bg-science-blue/50 rounded-lg border border-science-gold/20 transition-all hover:border-science-laser/50">
+                                        <strong class="text-science-gold block mb-1">3) Зияткерлік ойын.</strong>
+                                        <span>6.1.1.1. әдеби шығарманың жанрын, фабуласын, сюжетін анықтау.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 3-слайд: Практикалық Промпттар -->
+            <div class="swiper-slide">
+                <div class="slide-inner-bg"></div>
+                <div class="slide-content p-5 md:p-10 flex flex-col justify-center items-center text-center">
+                    <h2 class="font-playfair text-xl sm:text-2xl md:text-3xl font-bold text-gradient-gold mb-3 md:mb-5 border-b border-science-gold/20 pb-2 w-full">
+                        Дайын промпттар (Шаблондар)
+                    </h2>
+                    <p class="text-science-sepia text-xs sm:text-sm md:text-base mb-4 md:mb-6 font-inter max-w-2xl">
+                        Төмендегі батырмаларды басып, дайын мәтінді көшіріп алыңыз да, DeepSeek немесе ChatGPT-ге жіберіңіз.
+                    </p>
+                    
+                    <div class="flex flex-col gap-3 md:gap-4 w-full max-w-xl">
+                        <!-- Промпт 1 Батырмасы -->
+                        <button onclick="openModal('modal-prompt-1')" class="px-4 py-3 md:px-6 md:py-4 rounded-xl text-left bg-black/40 border border-science-gold/40 hover:bg-science-gold/20 transition flex items-center gap-3 md:gap-4 group shadow-[0_0_10px_rgba(212,175,55,0.1)]">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-science-blue border border-science-gold flex items-center justify-center text-science-gold group-hover:scale-110 transition shrink-0">
+                                <i class="fa-solid fa-timeline text-lg md:text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm sm:text-base md:text-lg font-playfair">1. Хронологиялық тізбек</h4>
+                                <p class="text-[10px] sm:text-[11px] md:text-[12px] text-science-sepia/70">Абайдың 7-қарасөзі негізінде (Киберпанк стиль)</p>
+                            </div>
+                        </button>
+
+                        <!-- Промпт 2 Батырмасы -->
+                        <button onclick="openModal('modal-prompt-2')" class="px-4 py-3 md:px-6 md:py-4 rounded-xl text-left bg-black/40 border border-science-gold/40 hover:bg-science-gold/20 transition flex items-center gap-3 md:gap-4 group shadow-[0_0_10px_rgba(212,175,55,0.1)]">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-science-blue border border-science-gold flex items-center justify-center text-science-gold group-hover:scale-110 transition shrink-0">
+                                <i class="fa-solid fa-tv text-lg md:text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm sm:text-base md:text-lg font-playfair">2. «Зияткерлік алаң» ойыны</h4>
+                                <p class="text-[10px] sm:text-[11px] md:text-[12px] text-science-sepia/70">20, 30, 40 ұпай жүйесі бар («Своя игра» форматы)</p>
+                            </div>
+                        </button>
+
+                        <!-- Промпт 3 Батырмасы -->
+                        <button onclick="openModal('modal-prompt-3')" class="px-4 py-3 md:px-6 md:py-4 rounded-xl text-left bg-black/40 border border-science-gold/40 hover:bg-science-gold/20 transition flex items-center gap-3 md:gap-4 group shadow-[0_0_10px_rgba(212,175,55,0.1)]">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-science-blue border border-science-gold flex items-center justify-center text-science-gold group-hover:scale-110 transition shrink-0">
+                                <i class="fa-solid fa-list-check text-lg md:text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm sm:text-base md:text-lg font-playfair">3. 5 түрлі тест форматы</h4>
+                                <p class="text-[10px] sm:text-[11px] md:text-[12px] text-science-sepia/70">12 сұрақтан тұратын кешенді интерактивті тест</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="swiper-pagination"></div>
+    </div>
+
+    <!-- МОДАЛЬ 1: Хронология -->
+    <div id="modal-prompt-1" class="modal-overlay fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4">
+        <div class="modal-content max-w-4xl max-h-[90vh] md:max-h-[85vh] rounded-xl flex flex-col relative">
+            <div class="p-3 md:p-5 border-b border-science-gold/20 flex justify-between items-center bg-black/20 rounded-t-xl">
+                <h3 class="font-playfair text-base md:text-xl font-bold text-science-gold truncate pr-2"><i class="fa-solid fa-timeline"></i> Промпт 1: Хронологиялық тізбек</h3>
+                <button onclick="closeModal('modal-prompt-1')" class="text-science-gold hover:text-white text-lg md:text-xl transition p-1"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto custom-scroll p-4 md:p-6 bg-[#0a1128] rounded-b-xl">
+                <button onclick="copyText('text-prompt-1')" class="mb-3 md:mb-4 bg-science-gold text-science-blue px-3 py-2 md:px-4 md:py-2 text-xs md:text-sm rounded font-bold hover:bg-yellow-400 transition shadow-[0_0_10px_rgba(212,175,55,0.3)] w-full sm:w-auto">
+                    <i class="fa-regular fa-copy"></i> Мәтінді көшіру
+                </button>
+                <div class="zoomable-text bg-black/40 p-3 md:p-5 rounded-lg border border-science-gold/20" onclick="toggleZoom(this, event)">
+                    <pre class="font-mono text-[11px] sm:text-[12px] md:text-[13px] text-green-400/90 whitespace-pre-wrap leading-relaxed" id="text-prompt-1">Сен тәжірибелі мұғалім әрі UI/UX веб-әзірлеушісің. 
+Маған Абайдың жетінші қара сөзіне негізделген хронологиялық тізбек ойынын жасап бер. 
+Ойын тапсырмалары мұғалім ұсынған нақты мәтін (шығарма мазмұны) бойынша құрылуы керек.
+
+Тақырыбы: Жетінші қара сөз (Жас баланың табиғаты). 
+
+Функционал: 
+1. Мәтін мағыналық блоктарға бөлініп, экранда аралас орналасқан. 
+2. Оқушы блоктарды дұрыс ретімен басуы керек (логикалық тізбек). 
+3. Дұрыс басқанда жасыл түс жанып, 'сәтті' дыбыс шықсын. 
+4. Қате басқанда қызыл түс жанып, 'қате' дыбыс (buzzer) шықсын. 
+
+Дизайн & Жалғасуы: 
+- Дизайн: Киберпанк стилі. Фон: Қою-көк немесе күлгін градиент, анимацияланған неон торлар. Қара түс мүлдем қолданылмауы керек!
+- МАҢЫЗДЫ: Дұрыс блоктарды басқан сайын, олардың арасындағы байланыс сызықтары (анимацияланған сызықтар немесе неон арналар) арқылы біріне-бірі жалғасып үндесіп отыруы керек. 
+- Батырмалар: Неон жиекті, басқанда жарқырайтын эффект. 
+- Қаріп: Футуристік (үлкен, оқуға жеңіл). 
+
+Барлық код (HTML, CSS, JS) сыртқы сілтемесіз бір файлда болсын.</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬ 2: Своя игра -->
+    <div id="modal-prompt-2" class="modal-overlay fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4">
+        <div class="modal-content max-w-4xl max-h-[90vh] md:max-h-[85vh] rounded-xl flex flex-col relative">
+            <div class="p-3 md:p-5 border-b border-science-gold/20 flex justify-between items-center bg-black/20 rounded-t-xl">
+                <h3 class="font-playfair text-base md:text-xl font-bold text-science-gold truncate pr-2"><i class="fa-solid fa-tv"></i> Промпт 2: Зияткерлік алаң</h3>
+                <button onclick="closeModal('modal-prompt-2')" class="text-science-gold hover:text-white text-lg md:text-xl transition p-1"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto custom-scroll p-4 md:p-6 bg-[#0a1128] rounded-b-xl">
+                <button onclick="copyText('text-prompt-2')" class="mb-3 md:mb-4 bg-science-gold text-science-blue px-3 py-2 md:px-4 md:py-2 text-xs md:text-sm rounded font-bold hover:bg-yellow-400 transition shadow-[0_0_10px_rgba(212,175,55,0.3)] w-full sm:w-auto">
+                    <i class="fa-regular fa-copy"></i> Мәтінді көшіру
+                </button>
+                <div class="zoomable-text bg-black/40 p-3 md:p-5 rounded-lg border border-science-gold/20" onclick="toggleZoom(this, event)">
+                    <pre class="font-mono text-[11px] sm:text-[12px] md:text-[13px] text-green-400/90 whitespace-pre-wrap leading-relaxed" id="text-prompt-2">Сен тәжірибелі мұғалім әрі жоғары деңгейлі веб-бағдарламалаушысың. 
+Маған қазақ әдебиеті стиліндегі ойынның HTML/CSS/JS кодын бір ғана файлда жазып бер. 
+Ойын сұрақтары мұғалім ұсынған нақты шығарма мәтіні (мазмұны) бойынша құрылуы керек.
+
+Функционал:
+1. Ойын концепциясы «Своя игра» болғанымен, экранның жоғарғы жағында басты тақырып ретінде "Зияткерлік алаң" деп үлкен әріптермен жазылып тұрсын.
+2. Экранның ортасында 5 тақырып және әр тақырыптың тұсында тек 20, 30, 40 ұпайлық батырмалар ғана кесте түрінде тұрсын.
+3. Батырманы басқанда сұрақ үлкен модальды терезеде ашылсын. Онда сұрақ мәтіні және "Жауапты көру" батырмасы болсын.
+4. Оң жақта немесе жоғарыда 2 топқа арналған ұпай есептейтін табло болсын. (Дұрыс жауапқа +ұпай қосатын, қатеге -ұпай шегеретін батырмаларымен).
+5. Таңдалып қойған сұрақтың батырмасы негізгі тақтада өшіп (қарайып немесе disable болып) қалуы керек.
+
+Дизайн: 
+Премиум телевизиялық ойын стилі. Қаракөк фон, алтын түсті жарқыраған батырмалар. 
+Анимация мен дыбыс эффектілері міндетті түрде болсын (сұрақ ашылғанда арнайы дыбыс, дұрыс/қате жауапқа дыбыстар).
+
+Ескерту: Тақырыптар мен сұрақтар мұғалім беретін мәтінге құрылады. Әзірше орнына 'Тақырып 1', 'Сұрақ 20 ұпай' деп шаблон ретінде қалдыр, мен өзім мазмұнын кейін толтырып аламын. Барлық код бір файлда болсын.</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬ 3: 5 түрлі тест -->
+    <div id="modal-prompt-3" class="modal-overlay fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4">
+        <div class="modal-content max-w-4xl max-h-[90vh] md:max-h-[85vh] rounded-xl flex flex-col relative">
+            <div class="p-3 md:p-5 border-b border-science-gold/20 flex justify-between items-center bg-black/20 rounded-t-xl">
+                <h3 class="font-playfair text-base md:text-xl font-bold text-science-gold truncate pr-2"><i class="fa-solid fa-list-check"></i> Промпт 3: 5 түрлі тест форматы</h3>
+                <button onclick="closeModal('modal-prompt-3')" class="text-science-gold hover:text-white text-lg md:text-xl transition p-1"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto custom-scroll p-4 md:p-6 bg-[#0a1128] rounded-b-xl">
+                <button onclick="copyText('text-prompt-3')" class="mb-3 md:mb-4 bg-science-gold text-science-blue px-3 py-2 md:px-4 md:py-2 text-xs md:text-sm rounded font-bold hover:bg-yellow-400 transition shadow-[0_0_10px_rgba(212,175,55,0.3)] w-full sm:w-auto">
+                    <i class="fa-regular fa-copy"></i> Мәтінді көшіру
+                </button>
+                <div class="zoomable-text bg-black/40 p-3 md:p-5 rounded-lg border border-science-gold/20" onclick="toggleZoom(this, event)">
+                    <pre class="font-mono text-[11px] sm:text-[12px] md:text-[13px] text-green-400/90 whitespace-pre-wrap leading-relaxed" id="text-prompt-3">Сен тәжірибелі әдіскер әрі UI/UX веб-әзірлеушісің. 
+Маған қазақ әдебиетіндегі шығарма мазмұны бойынша интерактивті тест қосымшасын жаса. 
+Барлық тапсырмалар мұғалім ұсынған нақты мәтін (шығарма мазмұны) бойынша құрылуы керек. 
+Барлық код HTML/CSS/JS бір ғана файлда болсын.
+
+Функционал - Барлығы нақты 12 тест сұрағы болсын. Тест ішінде 5 түрлі сұрақ форматы кезектесіп келуі керек:
+1-сұрақ (және тағы басқалары): Бір ғана дұрыс жауабы бар классикалық тест (Радиобатырма).
+2-сұрақ: Көп дұрыс жауабы бар сұрақ (Checkbox).
+3-сұрақ: Сәйкестендіру (Drag & Drop немесе басу арқылы А бағаны мен Ә бағанын қосу).
+4-сұрақ: Ақиқат немесе Жалған (True/False батырмалары).
+5-сұрақ: Ашық сұрақ (Оқушы бос орынға жауап сөзді теріп жазады, жүйе оны автоматты түрде тексереді).
+
+Дизайн және Талаптар: 
+Заманауи, эстетикалық әдемі, ұлттық ою-өрнектің заманауи минималистік элементтері қолданылған ашық пастельді түстер.
+Әр сұрақ жеке бетте (экранда) шықсын, "Келесі" батырмасымен ауысады. Жоғарыда сұрақтардың өту барысын көрсететін Progress Bar (прогресс жолағы) болсын.
+Жауапты таңдаған сәтте дұрыс болса жасыл, қате болса қызыл эффект берілсін.
+Соңында нәтиже беті шығып, жинаған ұпайы мен пайыздық көрсеткіші, сондай-ақ ынталандыру сөзі жазылсын.
+
+Ескерту: Тест сұрақтары мұғалім ұсынатын мәтін бойынша құрастырылады. Әзірше барлық 12 сұрақтың орнына 'Бұл 1-сұрақтың мәтіні' деп шаблон ретінде қалдыр, мазмұнын мен өзім қосамын.</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Төменгі авторлық жазу -->
+    <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60] font-caveat text-science-gold opacity-80 text-lg md:text-xl tracking-wider shadow-sm pointer-events-none">
+        2026 ж. Айнұр Хаметқызы
+    </div>
+
+    <!-- Тост Хабарлама -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[200] bg-science-gold text-science-blue px-4 py-2 md:px-5 md:py-2 rounded shadow-lg font-bold font-inter text-[10px] md:text-xs transform -translate-y-20 transition-all duration-300 whitespace-nowrap">
+        <i class="fa-solid fa-check-circle"></i> Мәтін көшірілді!
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script>
+        // Дыбыстар
+        let audioCtx;
+        function initAudio() {
+            if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playSound(type) {
+            if(!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            if (type === 'swipe') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+            } else if (type === 'click') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+            }
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+        }
+
+        document.body.addEventListener('click', initAudio, { once: true });
+        document.body.addEventListener('touchstart', initAudio, { once: true });
+
+        // Swiper инициализациясы
+        const swiper = new Swiper('.mySwiper', {
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            coverflowEffect: {
+                rotate: 25,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            },
+            pagination: { el: '.swiper-pagination', clickable: true },
+            on: { slideChange: function () { playSound('swipe'); } }
+        });
+
+        // Модальдар
+        function openModal(id) {
+            playSound('click');
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeModal(id) {
+            playSound('click');
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove('active');
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(el => {
+            el.addEventListener('click', function(e) {
+                if(e.target === this) closeModal(this.id);
+            });
+        });
+
+        // Үлкейту функциясы (Zoom-in)
+        function toggleZoom(el, e) {
+            // Егер батырма басылса, үлкейтпеу
+            if(e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
+            
+            el.classList.toggle('zoomed-in');
+            playSound('click');
+            
+            if(el.classList.contains('zoomed-in')){
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Көшіру функциясы (document.execCommand - барлық жерде жұмыс істейді)
+        function copyText(elementId) {
+            playSound('click');
+            const textToCopy = document.getElementById(elementId).innerText;
+            
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            // Экранда көрінбеуі үшін
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast();
+                } else {
+                    console.error('Көшіру мүмкін болмады');
+                }
+            } catch (err) {
+                console.error('Көшіру барысында қате шықты: ', err);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.style.transform = "translate(-50%, 0)";
+            setTimeout(() => { toast.style.transform = "translate(-50%, -100px)"; }, 2500);
+        }
+    </script>
+</body>
+</html>
